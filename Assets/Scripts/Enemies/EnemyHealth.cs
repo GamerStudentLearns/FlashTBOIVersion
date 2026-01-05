@@ -24,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        HitStopController.instance.Stop(0.03f);
         OnDeath?.Invoke();
         Destroy(gameObject);
     }

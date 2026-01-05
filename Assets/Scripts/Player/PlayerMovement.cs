@@ -14,9 +14,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        movement = movement.normalized;
+        movement = Vector2.zero;
+
+        if (Input.GetKey(KeyCode.W)) movement.y += 1;
+        if (Input.GetKey(KeyCode.S)) movement.y -= 1;
+        if (Input.GetKey(KeyCode.A)) movement.x -= 1;
+        if (Input.GetKey(KeyCode.D)) movement.x += 1;
 
     }
 
