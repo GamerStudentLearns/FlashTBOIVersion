@@ -1,35 +1,48 @@
 using UnityEngine;
-using System.Collections.Generic;
 public class RoomController : MonoBehaviour
 {
-    public GameObject enemySpawner;
-    public GameObject rewardPrefab;
-    public List<EnemyHealth> enemies = new();
-    public DoorController[] doors;
-    void Start()
-    {
-        foreach (var enemy in enemies)
-            enemy.OnDeath += CheckRoomClear;
-    }
-    void CheckRoomClear()
-    {
-        enemies.RemoveAll(e => e == null);
-        if (enemies.Count == 0)
-            ClearRoom();
-    }
+    [Header("Room Setup")]
+    public GameObject enemySpawner;       // Parent of all enemies in this room
+    public DoorController[] doors;        // Doors to control
+    public GameObject rewardPrefab;       // Reward to spawn
+    private bool roomCleared = false;     // Prevents repeated clearing
+                                          // Call this to start the room
     public void ActivateRoom()
     {
+        // Close all doors
         foreach (var door in doors)
             door.Close();
-
+        // Activate the enemy spawner
         enemySpawner.SetActive(true);
+        roomCleared = false;
     }
-    void ClearRoom()
+    void Update()
     {
+        // If already cleared, do nothing
+        if (roomCleared) return;
+        // Check if any active enemies exist
+        bool anyAlive = false;
+        foreach (EnemyHealth e in enemySpawner.GetComponentsInChildren<EnemyHealth>(true))
+        {
+            if (e != null && e.gameObject.activeInHierarchy)
+            {
+                anyAlive = true;
+                break;
+            }
+        }
+        // If none alive, clear room
+        if (!anyAlive)
+            ClearRoom();
+    }
+    private void ClearRoom()
+    {
+        roomCleared = true;
+        // Open doors
         foreach (var door in doors)
             door.Open();
-
-        Instantiate(rewardPrefab, transform.position, Quaternion.identity);
+        // Spawn reward
+        if (rewardPrefab != null)
+            Instantiate(rewardPrefab, transform.position, Quaternion.identity);
+        Debug.Log("Room cleared! Doors open!");
     }
-
 }

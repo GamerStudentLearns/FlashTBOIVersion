@@ -11,6 +11,15 @@ public class DoorController : MonoBehaviour
 
     public Transform targetSpawn;
 
+    void Awake()
+    {
+        doorSprite = GetComponent<SpriteRenderer>();
+        transform.localScale = Vector3.one;
+
+        if (doorSprite != null)
+            doorSprite.transform.localScale = Vector3.one;
+    }
+
     public void Open()
     {
         doorCollider.enabled = false;

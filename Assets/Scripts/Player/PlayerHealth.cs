@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (invulnerable) return;
         currentHearts -= dmg;
+        Debug.Log("Player took " + dmg + " damage. Current hearts: " + currentHearts);
         HitStopController.instance.Stop(0.05f);
         StartCoroutine(Invulnerability());
         if (currentHearts <= 0)
@@ -31,5 +33,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player Dead");
+        Destroy(gameObject);
+        SceneManager.LoadScene("GameOverScene");
     }
 }
