@@ -2,19 +2,29 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int health = 3;
+    public float maxHealth = 5f;
+    private float currentHealth;
 
-    void OnTriggerEnter2D(Collider2D other)
+    public System.Action OnDeath;
+
+    void Awake()
     {
-        if (other.CompareTag("Tear"))
-        {
-            Destroy(other.gameObject);
-            health--;
+               currentHealth = maxHealth;
 
-            if (health <= 0)
-                {
-                Destroy(gameObject);
-            }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
         }
+    }
+
+    void Die()
+    {
+        OnDeath?.Invoke();
+        Destroy(gameObject);
     }
 }
