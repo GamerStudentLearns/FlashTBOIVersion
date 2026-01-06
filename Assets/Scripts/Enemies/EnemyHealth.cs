@@ -5,7 +5,7 @@ public class EnemyHealth : MonoBehaviour
     public float maxHealth = 5f;
     private float currentHealth;
 
-    public System.Action OnDeath;
+    public event System.Action OnDeath;
 
     void Awake()
     {

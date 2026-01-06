@@ -1,40 +1,41 @@
-using UnityEngine;
-
+﻿using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [Header("Door Parts")]
     public Collider2D doorCollider;
     public SpriteRenderer doorSprite;
-
     public Sprite openSprite;
     public Sprite closedSprite;
-
+    [Header("Room Transition")]
     public Transform targetSpawn;
-
+    public int nextRoomIndex;
+    [HideInInspector] public RoomManager manager;
+    [HideInInspector] public RoomController parentRoom;
     void Awake()
     {
         doorSprite = GetComponent<SpriteRenderer>();
-        transform.localScale = Vector3.one;
-
-        if (doorSprite != null)
-            doorSprite.transform.localScale = Vector3.one;
+        manager = Object.FindFirstObjectByType<RoomManager>();
+        parentRoom = GetComponentInParent<RoomController>();
     }
-
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+        Debug.Log("Player hit the door!");
+        if (parentRoom != null && !parentRoom.IsCleared())
+        {
+            Debug.Log("Room not cleared yet!");
+            return;
+        }
+        Debug.Log("Door triggered, moving player");
+    }
     public void Open()
     {
         doorCollider.enabled = false;
         doorSprite.sprite = openSprite;
     }
-
     public void Close()
     {
         doorCollider.enabled = true;
         doorSprite.sprite = closedSprite;
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(!other.CompareTag("Player")) return;
-        other.transform.position = targetSpawn.position;
     }
 }
