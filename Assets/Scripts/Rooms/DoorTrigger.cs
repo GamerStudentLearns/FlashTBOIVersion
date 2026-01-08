@@ -1,6 +1,4 @@
-
 using UnityEngine;
-using System.Collections;
 public class DoorTrigger : MonoBehaviour
 {
     public DoorController parentDoor; // assign parent DoorController in inspector
@@ -30,13 +28,8 @@ public class DoorTrigger : MonoBehaviour
         // Tell RoomManager to activate the next room
         if (parentDoor.manager != null)
             parentDoor.manager.ActivateRoom(parentDoor.nextRoomIndex);
-        // Mark player as just teleported
+        // Mark player as just teleported and start cooldown on player
         player.justTeleported = true;
-        StartCoroutine(ResetTeleportFlag(player));
-    }
-    private IEnumerator ResetTeleportFlag(PlayerHealth player)
-    {
-        yield return new WaitForSeconds(teleportCooldown);
-        player.justTeleported = false;
+        player.SetTeleportCooldown(teleportCooldown);
     }
 }

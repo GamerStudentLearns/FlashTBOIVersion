@@ -1193,6 +1193,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1874088382381498053, guid: 2b3be08c0dcb05f48898b992cad613ed, type: 3}
+      propertyPath: rewardPrefab
+      value: 
+      objectReference: {fileID: 2922129042847442260, guid: 432927bad181f5f468cb7c203c97e12d, type: 3}
     - target: {fileID: 3488515149011233315, guid: 2b3be08c0dcb05f48898b992cad613ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.24

@@ -1,56 +1,63 @@
 ﻿using UnityEngine;
+
 public class RoomController : MonoBehaviour
 {
     [Header("Room Setup")]
-    public GameObject enemySpawner; // Parent of all enemies in this room
-    public DoorController[] doors;  // Doors to control
-    public GameObject rewardPrefab; // Reward to spawn
-    private bool roomCleared = false; // Prevent repeated clearing
+    public GameObject enemySpawner;   // Parent of all enemies in this room
+    public DoorController[] doors;    // Doors to control
+    public GameObject rewardPrefab;   // Reward to spawn
+
+    private bool roomCleared = false;
+    private bool roomActive = false;
+
     public void ActivateRoom()
     {
+        roomActive = true;
+        roomCleared = false;
+
         // Close all doors
         foreach (var door in doors)
             door.Close();
-        // Activate the enemy spawner
+
+        // Activate enemies
         enemySpawner.SetActive(true);
-        roomCleared = false;
     }
+
     void Update()
     {
-        if (roomCleared) return;
-        // Check if any active enemies exist
-        bool anyAlive = false;
+        // Don't check until the room is active
+        if (!roomActive || roomCleared)
+            return;
+
+        // Check if any enemies are still alive
         foreach (EnemyHealth e in enemySpawner.GetComponentsInChildren<EnemyHealth>(true))
         {
             if (e != null && e.gameObject.activeInHierarchy)
-            {
-                anyAlive = true;
-                break;
-            }
+                return; // At least one enemy still alive
         }
-        // If none alive, clear room
-        if (!anyAlive)
-            ClearRoom();
+
+        // No enemies left
+        ClearRoom();
     }
+
     private void ClearRoom()
     {
         roomCleared = true;
+        roomActive = false;
+
         // Open doors
         foreach (var door in doors)
             door.Open();
-        // Spawn reward
+
+        // Spawn reward once
         if (rewardPrefab != null)
             Instantiate(rewardPrefab, transform.position, Quaternion.identity);
+
         Debug.Log("Room cleared! Doors open!");
     }
-    // ✅ Updated IsCleared() to match spawner logic
+
     public bool IsCleared()
     {
-        foreach (EnemyHealth e in enemySpawner.GetComponentsInChildren<EnemyHealth>(true))
-        {
-            if (e != null && e.gameObject.activeInHierarchy)
-                return false;
-        }
-        return true;
+        return roomCleared;
     }
 }
