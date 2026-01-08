@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
 {
 
     public int maxHearts = 6;
-
+    [HideInInspector] public bool justTeleported = false;
     public float invulnTime = 1f;
 
     private int currentHearts;
@@ -73,6 +73,18 @@ public class PlayerHealth : MonoBehaviour
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
 
+    }
+
+    public void Heal(int amount)
+    {
+        currentHearts += amount;
+        if(currentHearts > maxHearts)
+        {
+            currentHearts = maxHearts;
+        }
+        heartUI.UpdateHearts(currentHearts);
+
+        Debug.Log("Healed! Current hearts: " + currentHearts);
     }
 
 }

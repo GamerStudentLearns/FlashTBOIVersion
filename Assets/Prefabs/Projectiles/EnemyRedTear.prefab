@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8488638174991557286}
   - component: {fileID: 4555787166577615195}
   m_Layer: 0
-  m_Name: BonePro
+  m_Name: EnemyRedTear
   m_TagString: Tear
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: -1350122377
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4976234673607097884, guid: dcd53f2464a0a984793b35aef33e1c54, type: 3}
+  m_Sprite: {fileID: 4727213385111512390, guid: 0b8a1b2a0a7b1ae45a9a52d955570bc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
