@@ -1,30 +1,46 @@
 using UnityEngine;
+[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyChase : MonoBehaviour
 {
-    public float moveSpeed = 2f;
-    public float separationRadius = 0.6f;
-    public float separationStrength = 1.5f;
+    [Header("Movement Settings")]
+    public float moveSpeed = 2f;       // Base speed
+    public float chaseRadius = 5f;     // Distance at which enemy starts chasing
+    [Header("Optional Knockback")]
+    public float knockbackForce = 5f;
     private Transform player;
-    void Start()
+    private Rigidbody2D rb;
+    private Vector2 moveDirection;
+    void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody2D>();
     }
-    void Update()
+    void OnEnable()
     {
-        Vector2 directionToPlayer = (player.position - transform.position).normalized;
-        Vector2 separation = Vector2.zero;
-        Collider2D[] nearby = Physics2D.OverlapCircleAll(
-            transform.position,
-            separationRadius
-        );
-        foreach (var col in nearby)
+        // Find the player in the scene when this enemy becomes active
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            player = playerObj.transform;
+    }
+    void FixedUpdate()
+    {
+        if (player == null) return;
+        Vector2 toPlayer = player.position - transform.position;
+        float distance = toPlayer.magnitude;
+        if (distance <= chaseRadius)
         {
-            if (col.gameObject == gameObject) continue;
-            if (!col.CompareTag("Enemy")) continue;
-            Vector2 diff = (Vector2)(transform.position - col.transform.position);
-            separation += diff.normalized / diff.magnitude;
+            moveDirection = toPlayer.normalized;
+            rb.MovePosition(rb.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
         }
-        Vector2 finalDirection = (directionToPlayer + separation * separationStrength).normalized;
-        transform.position += (Vector3)(finalDirection * moveSpeed * Time.deltaTime);
+    }
+    // Optional: take knockback from player attacks
+    public void ApplyKnockback(Vector2 direction)
+    {
+        rb.AddForce(direction.normalized * knockbackForce, ForceMode2D.Impulse);
+    }
+    // Debug: draw chase radius
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
     }
 }

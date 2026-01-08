@@ -1,56 +1,85 @@
 ﻿using UnityEngine;
+
 public class RoomController : MonoBehaviour
+
 {
-    [Header("Room Setup")]
-    public GameObject enemySpawner; // Parent of all enemies in this room
-    public DoorController[] doors;  // Doors to control
-    public GameObject rewardPrefab; // Reward to spawn
-    private bool roomCleared = false; // Prevent repeated clearing
+
+    public GameObject enemySpawner;
+
+    public DoorController[] doors;
+
+    public GameObject rewardPrefab;
+
+    private bool roomCleared = false;
+
+    private bool rewardSpawned = false;
+
     public void ActivateRoom()
+
     {
-        // Close all doors
+
         foreach (var door in doors)
+
             door.Close();
-        // Activate the enemy spawner
-        enemySpawner.SetActive(true);
+
+        if (enemySpawner != null)
+
+            enemySpawner.SetActive(true);
+
         roomCleared = false;
+
     }
+
     void Update()
+
     {
-        if (roomCleared) return;
-        // Check if any active enemies exist
-        bool anyAlive = false;
-        foreach (EnemyHealth e in enemySpawner.GetComponentsInChildren<EnemyHealth>(true))
+
+        if (roomCleared || enemySpawner == null) return;
+
+        EnemyHealth[] enemies = enemySpawner.GetComponentsInChildren<EnemyHealth>(true);
+
+        foreach (var e in enemies)
+
         {
+
             if (e != null && e.gameObject.activeInHierarchy)
-            {
-                anyAlive = true;
-                break;
-            }
+
+                return;
+
         }
-        // If none alive, clear room
-        if (!anyAlive)
-            ClearRoom();
+
+        ClearRoom();
+
     }
-    private void ClearRoom()
+
+    void ClearRoom()
+
     {
+
         roomCleared = true;
-        // Open doors
+
         foreach (var door in doors)
+
             door.Open();
-        // Spawn reward
-        if (rewardPrefab != null)
-            Instantiate(rewardPrefab, transform.position, Quaternion.identity);
-        Debug.Log("Room cleared! Doors open!");
-    }
-    // ✅ Updated IsCleared() to match spawner logic
-    public bool IsCleared()
-    {
-        foreach (EnemyHealth e in enemySpawner.GetComponentsInChildren<EnemyHealth>(true))
+
+        if (!rewardSpawned && rewardPrefab != null)
+
         {
-            if (e != null && e.gameObject.activeInHierarchy)
-                return false;
+
+            Instantiate(rewardPrefab, transform.position, Quaternion.identity);
+
+            rewardSpawned = true;
+
         }
-        return true;
+
     }
+
+    public bool IsCleared()
+
+    {
+
+        return roomCleared;
+
+    }
+
 }

@@ -19,4 +19,11 @@ public class RoomCameraController : MonoBehaviour
     {
         targetRoom = roomTransform;
     }
+
+    public void SnapToTarget(Transform newTarget)
+    {
+        targetRoom = newTarget;
+        transform.position = new Vector3(newTarget.position.x, newTarget.position.y, transform.position.z);
+
+    }
 }

@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a10d5ef25477642a46c187277a0da0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTrigger
-  parentDoor: {fileID: 7340936400738708754}
+  door: {fileID: 0}
 --- !u!1 &1410210133605251679
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +488,37 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &2213192874504892469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5437793234317939804}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5437793234317939804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213192874504892469}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1556953066955038194}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3588475473949706113
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,8 +827,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChase
   moveSpeed: 2
-  separationRadius: 0.6
-  separationStrength: 1.5
+  chaseRadius: 5
+  knockbackForce: 5
 --- !u!114 &1601360190094587316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1019,14 +1050,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0665d91a675814596ed8a295732ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
+  direction: 0
+  parentRoom: {fileID: 0}
   doorCollider: {fileID: 626085156327563405}
-  doorSprite: {fileID: 1406804523454486028}
+  spriteRenderer: {fileID: 0}
   openSprite: {fileID: 570698381483946266, guid: e7dda3439fe3e58458809b8109700e42, type: 3}
   closedSprite: {fileID: -7142658690920363856, guid: 267c83d5c64e13143a49123f1e26e9e7, type: 3}
-  targetSpawn: {fileID: 0}
-  nextRoomIndex: 0
-  manager: {fileID: 0}
-  parentRoom: {fileID: 0}
 --- !u!61 &626085156327563405
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1244,8 +1273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChase
   moveSpeed: 2
-  separationRadius: 0.6
-  separationStrength: 1.5
+  chaseRadius: 5
+  knockbackForce: 5
 --- !u!114 &6484365195594332852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1443,8 +1472,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyChase
   moveSpeed: 2
-  separationRadius: 0.6
-  separationStrength: 1.5
+  chaseRadius: 5
+  knockbackForce: 5
 --- !u!114 &9128423471040164167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1673,6 +1702,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5437793234317939804}
   - {fileID: 4738920180872505422}
   - {fileID: 755056428029838787}
   - {fileID: 6900770731104241993}
@@ -1699,8 +1729,6 @@ MonoBehaviour:
   enemySpawner: {fileID: 8535107310902294310}
   doors:
   - {fileID: 7340936400738708754}
-  - {fileID: 0}
-  - {fileID: 0}
   rewardPrefab: {fileID: 0}
 --- !u!61 &6961870992321837540
 BoxCollider2D:

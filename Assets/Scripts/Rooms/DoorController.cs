@@ -1,41 +1,23 @@
 ﻿using UnityEngine;
+public enum DoorDirection { Top, Bottom, Left, Right }
 public class DoorController : MonoBehaviour
 {
-    [Header("Door Parts")]
+    [Header("Door Settings")]
+    public DoorDirection direction;
+    public RoomController parentRoom;
+    [Header("Visuals")]
     public Collider2D doorCollider;
-    public SpriteRenderer doorSprite;
+    public SpriteRenderer spriteRenderer;
     public Sprite openSprite;
     public Sprite closedSprite;
-    [Header("Room Transition")]
-    public Transform targetSpawn;
-    public int nextRoomIndex;
-    [HideInInspector] public RoomManager manager;
-    [HideInInspector] public RoomController parentRoom;
-    void Awake()
-    {
-        doorSprite = GetComponent<SpriteRenderer>();
-        manager = Object.FindFirstObjectByType<RoomManager>();
-        parentRoom = GetComponentInParent<RoomController>();
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!other.CompareTag("Player")) return;
-        Debug.Log("Player hit the door!");
-        if (parentRoom != null && !parentRoom.IsCleared())
-        {
-            Debug.Log("Room not cleared yet!");
-            return;
-        }
-        Debug.Log("Door triggered, moving player");
-    }
     public void Open()
     {
-        doorCollider.enabled = false;
-        doorSprite.sprite = openSprite;
+        if (doorCollider != null) doorCollider.enabled = false;
+        if (spriteRenderer != null && openSprite != null) spriteRenderer.sprite = openSprite;
     }
     public void Close()
     {
-        doorCollider.enabled = true;
-        doorSprite.sprite = closedSprite;
+        if (doorCollider != null) doorCollider.enabled = true;
+        if (spriteRenderer != null && closedSprite != null) spriteRenderer.sprite = closedSprite;
     }
 }
