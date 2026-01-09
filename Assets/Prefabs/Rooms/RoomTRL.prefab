@@ -634,6 +634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTrigger
   parentDoor: {fileID: 5277519384472152392}
+  teleportCooldown: 0.2
 --- !u!1 &5255933686194626588
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6025970207290330394
 Transform:
   m_ObjectHideFlags: 0
@@ -1371,6 +1372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTrigger
   parentDoor: {fileID: 2005557143976963803}
+  teleportCooldown: 0.2
 --- !u!1 &6051568420714288883
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorTrigger
   parentDoor: {fileID: 2146348287332494793}
+  teleportCooldown: 0.2
 --- !u!1 &8876781274396084751
 GameObject:
   m_ObjectHideFlags: 0

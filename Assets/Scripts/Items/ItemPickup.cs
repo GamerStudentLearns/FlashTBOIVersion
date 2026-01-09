@@ -4,13 +4,40 @@ public class ItemPickup : MonoBehaviour
 {
     public ItemData item;
 
-    void OnTriggerEnter2D(Collider2D other)
+    [Header("Pedestal")]
+    public Sprite emptyPedestalSprite;
+
+    private bool pickedUp = false;
+    private SpriteRenderer spriteRenderer;
+    private Collider2D col;
+
+    private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (pickedUp) return;
+
         if (other.TryGetComponent(out PlayerStats stats))
         {
-            stats.ModifyStat(item.effect);
-            Destroy(gameObject);
-
+            item.Apply(stats);
+            BecomeEmptyPedestal();
         }
+    }
+   
+
+
+    private void BecomeEmptyPedestal()
+    {
+        pickedUp = true;
+
+        // Swap sprite
+        spriteRenderer.sprite = emptyPedestalSprite;
+
+        // Disable pickup
+        col.enabled = false;
     }
 }
